@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 
 public class Movie {
-    String title;
+    public String title;
 
     private final String KEY_TITLE = "title";
 
