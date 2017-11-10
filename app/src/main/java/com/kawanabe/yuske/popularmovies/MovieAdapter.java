@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kawanabe.yuske.popularmovies.models.Movie;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -32,11 +34,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView mTextView;
+        private final ImageView mImageview;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.tv_title);
+            mImageview = (ImageView) view.findViewById(R.id.iv_movie);
             view.setOnClickListener(this);
         }
 
@@ -48,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         }
 
         public void bind(Movie movie) {
-            mTextView.setText(movie.title);
+            Picasso.with(mImageview.getContext()).load(movie.imageURL()).into(mImageview);
         }
     }
 
@@ -70,6 +72,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
+        if (mMovies == null) { return 0; }
+
         return mMovies.length;
+    }
+
+    public void setmMovies(Movie[] mMovies) {
+        this.mMovies = mMovies;
+        notifyDataSetChanged();
     }
 }

@@ -9,12 +9,19 @@ import org.json.JSONObject;
 
 public class Movie {
     public String title;
+    public String posterPath;
 
     private final String KEY_TITLE = "title";
+    private final String KEY_POSTER = "poster_path";
+
+    public String imageURL() {
+        return "http://image.tmdb.org/t/p/w185" + posterPath;
+    }
 
     public Movie(JSONObject json) {
         try {
             title = json.getString(KEY_TITLE);
+            posterPath = json.getString(KEY_POSTER);
         } catch (JSONException e) {
             e.printStackTrace();
         }
