@@ -1,6 +1,7 @@
 package com.kawanabe.yuske.popularmovies.utilities;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,14 +17,14 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     final static String BASE_URL = "http://api.themoviedb.org/3/movie";
-    final static String POPULAR_PATH = "popular";
+
     final static String PARAM_API_KEY = "api_key";
     final static String API_KEY = "";
 
 
-    public static URL buildUrl() {
+    public static URL buildUrl(String path) {
     Uri buildUri = Uri.parse(BASE_URL).buildUpon()
-            .appendPath(POPULAR_PATH)
+            .appendPath(path)
             .appendQueryParameter(PARAM_API_KEY, API_KEY)
             .build();
 
@@ -34,6 +35,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
+        Log.d("tag", url.toString());
         return url;
     }
 
