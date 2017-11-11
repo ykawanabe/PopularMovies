@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,8 +46,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mMovieAdapter);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-//        RecyclerView.LayoutManager layoutManager  = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(layoutManager);
 
         getPopularMovies();
@@ -75,6 +75,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         new FetchMovieAsyncTask(listner).execute(url);
     }
 
+    private int numberOfColumns() {
+        DisplayMetrics display = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(display);
+
+        int widthDivider = 400;
+        int nColumns = display.widthPixels / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
+    }
     private void showErrorMessage() {
         AlertDialog alert = new AlertDialog.Builder(this).create();
         alert.setTitle("Error");
