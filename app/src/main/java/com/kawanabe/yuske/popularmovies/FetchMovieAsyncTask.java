@@ -50,6 +50,9 @@ public class FetchMovieAsyncTask extends AsyncTask<URL, Void, Movie[]> {
     private Movie[] getMoviesFromJSONString(String jsonString) {
         final String TAG_RESULTS = "results";
         Movie[] movies = new Movie[0];
+        if (jsonString == null) {
+            return null;
+        }
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);

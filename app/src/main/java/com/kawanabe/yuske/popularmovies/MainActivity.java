@@ -1,8 +1,10 @@
 package com.kawanabe.yuske.popularmovies;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -59,16 +61,33 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         OnTaskCompleted listner = new OnTaskCompleted() {
             @Override
             public void onFetchMoviesTaskCompleted(Movie[] movies) {
-                for (Movie movie : movies) {
-                    Log.d("Tag", movie.title);
-                }
                 mProgressBar.setVisibility(View.INVISIBLE);
-                mMovieAdapter.setmMovies(movies);
+
+                if (movies == null || movies.length == 0) {
+                    showErrorMessage();
+                } else {
+                    mMovieAdapter.setmMovies(movies);
+                }
             }
         };
 
         mProgressBar.setVisibility(View.VISIBLE);
         new FetchMovieAsyncTask(listner).execute(url);
+    }
+
+    private void showErrorMessage() {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle("Error");
+        alert.setMessage("No movie data is available.");
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Retry",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getPopularMovies();
+                        dialog.dismiss();
+                    }
+                });
+        alert.show();
     }
 
     @Override
